@@ -245,4 +245,4 @@ ModelManifest.xml
 .fake/
 
 # 3rd Party
-lib-x64/
+lib-x64
