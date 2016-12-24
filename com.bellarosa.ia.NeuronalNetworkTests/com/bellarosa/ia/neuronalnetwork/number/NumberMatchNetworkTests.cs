@@ -13,8 +13,8 @@ namespace com.bellarosa.ia.neuronalnetwork.number.Tests
         #endregion
 
         #region Initializer / Cleanup
-        [AssemblyInitialize]
-        public static void assemblyInitialize(TestContext testContext)
+        [ClassInitialize]
+        public static void classInitialize(TestContext testContext)
         {
             XmlConfigurator.Configure();
             testNetwork = new NumberMatchNetwork();

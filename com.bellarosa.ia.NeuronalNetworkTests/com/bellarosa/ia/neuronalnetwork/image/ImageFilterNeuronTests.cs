@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using com.bellarosa.ia.neuronalnetwork.image;
 using log4net.Config;
-using System.Linq;
 
 namespace com.bellarosa.ia.neuronalnetwork.number.image.Tests
 {
@@ -16,6 +15,7 @@ namespace com.bellarosa.ia.neuronalnetwork.number.image.Tests
         }
         #endregion
 
+        #region Tests
         [TestMethod()]
         public void processTestFloor()
         {
@@ -33,5 +33,6 @@ namespace com.bellarosa.ia.neuronalnetwork.number.image.Tests
             byte[] neuronResult = (byte[])new ImageFilterNeuron().process(new ImageData[] { testImage });
             CollectionAssert.AreEqual((byte[])referenceImage.Data, neuronResult, "Test same");
         }
+        #endregion
     }
 }

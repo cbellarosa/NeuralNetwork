@@ -6,7 +6,7 @@ namespace com.bellarosa.ia.neuronalnetwork.image
 {
     public class ImageData : IData
     {
-        #region Private Attributes
+        #region Attributes
         private byte[] data = new byte[35];
         private static readonly ILog log = LogManager.GetLogger(typeof(ImageData));
         #endregion

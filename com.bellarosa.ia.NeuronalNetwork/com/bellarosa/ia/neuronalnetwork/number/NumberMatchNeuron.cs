@@ -10,7 +10,7 @@ namespace com.bellarosa.ia.neuronalnetwork.number
 {
     public class NumberMatchNeuron : INeuron
     {
-        #region Private Attributes
+        #region Attributes
         private int id;
         private int imageWidth = 0;
         private int imageHeight = 0;
@@ -71,8 +71,14 @@ namespace com.bellarosa.ia.neuronalnetwork.number
             int byteLength = this.byteTable.Length;
             int numberOfSamePixels = 0;
             int currentByte = ImageFilterNeuron.NonSignificantByteNumber;
-            while (currentByte < byteLength)
+            while (currentByte < byteLength - 1)
             {
+                bool isEndOfRow = (currentByte - ImageFilterNeuron.NonSignificantByteNumber) % (numberOfColors * this.imageWidth + 1) == 0;
+                if (isEndOfRow)
+                {
+                    currentByte++;
+                }
+
                 if (this.byteTable[currentByte] == comparingByteTable[currentByte]
                     && this.byteTable[currentByte + 1] == comparingByteTable[currentByte + 1]
                     && this.byteTable[currentByte + 2] == comparingByteTable[currentByte + 2])
@@ -80,12 +86,6 @@ namespace com.bellarosa.ia.neuronalnetwork.number
                     numberOfSamePixels++;
                 }
                 currentByte += numberOfColors;
-
-                bool isEndOfRow = (currentByte - ImageFilterNeuron.NonSignificantByteNumber) % ( numberOfColors * this.imageWidth) == 0;
-                if (isEndOfRow)
-                {
-                    currentByte++;
-                }
             }
             return (float)numberOfSamePixels / ((float)this.imageHeight * (float)this.imageWidth);
         }

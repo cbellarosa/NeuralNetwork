@@ -1,7 +1,6 @@
 ﻿using com.bellarosa.ia.neuronalnetwork.image;
 using com.bellarosa.ia.neuronalnetwork.number.image;
 using System;
-using System.Collections.Generic;
 
 namespace com.bellarosa.ia.neuronalnetwork.number
 {

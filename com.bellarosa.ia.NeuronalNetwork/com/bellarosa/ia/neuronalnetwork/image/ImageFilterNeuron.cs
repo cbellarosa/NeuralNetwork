@@ -2,24 +2,21 @@
 using log4net;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace com.bellarosa.ia.neuronalnetwork.number.image
 {
     public class ImageFilterNeuron : INeuron
     {
-        #region Public Constants
-        public const int NonSignificantByteNumber = 54;
+        #region Constants
+        public const int NonSignificantByteNumber = 53;
         #endregion
 
-        #region Private Attributes
+        #region Attributes
         private readonly ICollection<INeuron> synapses = new LinkedList<INeuron>();
         private readonly ILog log = LogManager.GetLogger(typeof(NumberMatchNeuron));
         #endregion
 
-        #region Public Attributes
+        #region Properties
         public ICollection<INeuron> Synapses
         {
             get
