@@ -2,7 +2,7 @@
 using System;
 using System.Drawing;
 
-namespace com.bellarosa.ia
+namespace com.bellarosa.ia.neuronalnetwork.image
 {
     public class ImageData : IData
     {
@@ -12,6 +12,11 @@ namespace com.bellarosa.ia
         #endregion
 
         #region Constructor
+        public ImageData(byte[] data)
+        {
+            this.data = data;
+        }
+
         public ImageData(String fileName)
         {
             try
@@ -29,7 +34,7 @@ namespace com.bellarosa.ia
         #endregion
 
         #region Public Methods
-        public byte[] Data
+        public object Data
         {
             get { return this.data; }
         }

@@ -1,26 +1,27 @@
-﻿using log4net;
+﻿using com.bellarosa.ia.neuronalnetwork.image;
+using com.bellarosa.ia.neuronalnetwork.number.image;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
-namespace com.bellarosa.ia
+namespace com.bellarosa.ia.neuronalnetwork.number
 {
-    public class Neuron
+    public class NumberMatchNeuron : INeuron
     {
         #region Private Attributes
         private int id;
         private int imageWidth = 0;
         private int imageHeight = 0;
-        private readonly ICollection<Neuron> synapses = new LinkedList<Neuron>();
         private byte[] byteTable;
-        private readonly ILog log = LogManager.GetLogger(typeof(Neuron));
-        private const int nonSignificantByteNumber = 54;
+        private readonly ILog log = LogManager.GetLogger(typeof(NumberMatchNeuron));
         private const int numberOfColors = 3;
+        private readonly ICollection<INeuron> synapses = new LinkedList<INeuron>();
         #endregion
 
         #region Constructor
-        public Neuron(int id)
+        public NumberMatchNeuron(int id)
         {
             this.id = id;
         }
@@ -32,9 +33,12 @@ namespace com.bellarosa.ia
             get { return this.id; }
         }
 
-        public ICollection<Neuron> Synapses
+        public ICollection<INeuron> Synapses
         {
-            get { return this.synapses; }
+            get
+            {
+                return this.synapses;
+            }
         }
         #endregion
 
@@ -56,12 +60,17 @@ namespace com.bellarosa.ia
             }
         }
 
-        public float process(IData data, double activation) 
+        public object process(IData[] data) 
         {
+            if (data == null || data.Length != 1 || !data[0].GetType().IsAssignableFrom(typeof(ImageData)) || data[0].Data == null)
+            {
+                throw new ArgumentException();
+            }
+
+            byte[] comparingByteTable = (byte[])data[0].Data;
             int byteLength = this.byteTable.Length;
             int numberOfSamePixels = 0;
-            byte[] comparingByteTable = data.Data;
-            int currentByte = nonSignificantByteNumber;
+            int currentByte = ImageFilterNeuron.NonSignificantByteNumber;
             while (currentByte < byteLength)
             {
                 if (this.byteTable[currentByte] == comparingByteTable[currentByte]
@@ -72,7 +81,7 @@ namespace com.bellarosa.ia
                 }
                 currentByte += numberOfColors;
 
-                bool isEndOfRow = (currentByte - nonSignificantByteNumber) % ( numberOfColors * this.imageWidth) == 0;
+                bool isEndOfRow = (currentByte - ImageFilterNeuron.NonSignificantByteNumber) % ( numberOfColors * this.imageWidth) == 0;
                 if (isEndOfRow)
                 {
                     currentByte++;
