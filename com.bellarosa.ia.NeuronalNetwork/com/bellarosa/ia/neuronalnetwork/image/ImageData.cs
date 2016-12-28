@@ -4,7 +4,10 @@ using System.Drawing;
 
 namespace com.bellarosa.ia.neuronalnetwork.image
 {
-    public class ImageData : IData
+    /// <summary>
+    /// Allow to load and manage Image data
+    /// </summary>
+    public class ImageData
     {
         #region Attributes
         private byte[] data = new byte[35];
@@ -12,11 +15,6 @@ namespace com.bellarosa.ia.neuronalnetwork.image
         #endregion
 
         #region Constructor
-        public ImageData(byte[] data)
-        {
-            this.data = data;
-        }
-
         public ImageData(String fileName)
         {
             try

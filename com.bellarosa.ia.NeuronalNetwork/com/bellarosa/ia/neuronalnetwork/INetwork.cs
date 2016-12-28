@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace com.bellarosa.ia.neuronalnetwork
+﻿namespace com.bellarosa.ia.neuronalnetwork
 {
+    /// <summary>
+    /// Interface for all neuron networks
+    /// </summary>
     public interface INetwork
     {
         #region Public Methods
-        object process(IData data);
+        object process(object data);
         #endregion
     }
 }

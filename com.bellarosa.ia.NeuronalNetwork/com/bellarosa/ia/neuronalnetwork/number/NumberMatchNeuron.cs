@@ -1,23 +1,19 @@
 ﻿using com.bellarosa.ia.neuronalnetwork.image;
 using com.bellarosa.ia.neuronalnetwork.number.image;
-using log4net;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 
 namespace com.bellarosa.ia.neuronalnetwork.number
 {
-    public class NumberMatchNeuron : INeuron
+    /// <summary>
+    /// Match a single digit
+    /// </summary>
+    public class NumberMatchNeuron : SimpleNeuron
     {
         #region Attributes
         private int id;
-        private int imageWidth = 0;
-        private int imageHeight = 0;
         private byte[] byteTable;
-        private readonly ILog log = LogManager.GetLogger(typeof(NumberMatchNeuron));
-        private const int numberOfColors = 3;
-        private readonly ICollection<INeuron> synapses = new LinkedList<INeuron>();
         #endregion
 
         #region Constructor
@@ -32,56 +28,52 @@ namespace com.bellarosa.ia.neuronalnetwork.number
         {
             get { return this.id; }
         }
-
-        public ICollection<INeuron> Synapses
-        {
-            get
-            {
-                return this.synapses;
-            }
-        }
         #endregion
 
         #region Public Methods
-        public void init()
+        public override void init()
         {
             string fileName = String.Format(@".\resources\{0:d}.bmp", this.id);
             try
             {
-                Image image = Image.FromFile(fileName);
-                this.imageWidth = image.Width;
-                this.imageHeight = image.Height;
-                ImageConverter imageConverter = new ImageConverter();
-                this.byteTable = (byte[])imageConverter.ConvertTo(image, typeof(byte[]));
+                ImageData imageData = new ImageData(fileName);
+                IDictionary<int, object> inputImage = new Dictionary<int, object> { {1, imageData.Data} };
+                byte[] extractedBytes = (byte[])new ImageDataExtractionNeuron().process(inputImage);
+                IDictionary<int, object> extractedData = new Dictionary<int, object> { {1, extractedBytes } };
+                this.byteTable = (byte[])new ImageDataSigmoidNeuron().process(extractedData);
             }
             catch (IOException e)
             {
-                log.Error(String.Format("Unable to load resources {0:s}", fileName), e);
+                String errorMessage = String.Format("Unable to load resources {0:s}", fileName);
+                log.Error(errorMessage, e);
+                throw new ArgumentException(errorMessage);
             }
         }
 
-        public object process(IData[] data) 
+        public override object process(IDictionary<int, object> data) 
         {
-            if (data == null || data.Length != 1 || !data[0].GetType().IsAssignableFrom(typeof(ImageData)) || data[0].Data == null)
+            if (data == null)
             {
                 throw new ArgumentException();
             }
 
-            byte[] comparingByteTable = (byte[])data[0].Data;
+            if (data.Count == 0 || data[1] == null)
+            {
+                throw new ArgumentException(data.ToString());
+            }
+
+            byte[] comparingByteTable = (byte[])data[1];
             int byteLength = this.byteTable.Length;
             int numberOfSamePixels = 0;
-            int currentByte = ImageFilterNeuron.NonSignificantByteNumber;
-            while (currentByte < byteLength - 1)
+            for (int currentByte = 0;currentByte < byteLength;currentByte++)
             {
-                if (this.byteTable[currentByte] == comparingByteTable[currentByte]
-                    && this.byteTable[currentByte + 1] == comparingByteTable[currentByte + 1]
-                    && this.byteTable[currentByte + 2] == comparingByteTable[currentByte + 2])
+                if (this.byteTable[currentByte] == comparingByteTable[currentByte])
                 {
                     numberOfSamePixels++;
                 }
-                currentByte += numberOfColors;
+
             }
-            return (float)numberOfSamePixels / ((float)this.imageHeight * (float)this.imageWidth);
+            return (float)numberOfSamePixels / (float)byteLength;
         }
         #endregion
     }

@@ -54,7 +54,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageFilterNeuronTests.cs" />
+    <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataExtractionNeuronTests.cs" />
+    <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataSigmoidNeuronTests.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\number\NumberMatchNetworkTests.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\number\NumberMatchNeuronTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

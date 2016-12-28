@@ -2,6 +2,9 @@
 
 namespace com.bellarosa.ia.neuronalnetwork
 {
+    /// <summary>
+    /// Base class for all multi layers neuron networks
+    /// </summary>
     public abstract class MultiLayerNetwork : INetwork
     {
         #region Attributes
@@ -16,7 +19,7 @@ namespace com.bellarosa.ia.neuronalnetwork
         #endregion
 
         #region Public Methods
-        public abstract object process(IData data);
+        public abstract object process(object data);
         #endregion
     }
 }

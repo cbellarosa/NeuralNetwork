@@ -44,14 +44,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="com\bellarosa\ia\neuronalnetwork\IData.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageData.cs" />
+    <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataExtractionNeuron.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\MultiLayerNetwork.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\INeuron.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\INetwork.cs" />
-    <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageFilterNeuron.cs" />
+    <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataSigmoidNeuron.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\number\NumberMatchNetwork.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\number\NumberMatchNeuron.cs" />
+    <Compile Include="com\bellarosa\ia\neuronalnetwork\SimpleNeuron.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
