@@ -73,12 +73,6 @@ namespace com.bellarosa.ia.neuronalnetwork.number
             int currentByte = ImageFilterNeuron.NonSignificantByteNumber;
             while (currentByte < byteLength - 1)
             {
-                bool isEndOfRow = (currentByte - ImageFilterNeuron.NonSignificantByteNumber) % (numberOfColors * this.imageWidth + 1) == 0;
-                if (isEndOfRow)
-                {
-                    currentByte++;
-                }
-
                 if (this.byteTable[currentByte] == comparingByteTable[currentByte]
                     && this.byteTable[currentByte + 1] == comparingByteTable[currentByte + 1]
                     && this.byteTable[currentByte + 2] == comparingByteTable[currentByte + 2])

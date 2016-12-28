@@ -34,7 +34,7 @@ namespace com.bellarosa.ia.neuronalnetwork.number.Tests
             NumberMatchNeuron numberMatchNeuron = new NumberMatchNeuron(1);
             numberMatchNeuron.init();
             float neuronResult = (float)numberMatchNeuron.process(new ImageData[] { testImage });
-            Assert.AreEqual(0.457142859697342f, neuronResult, "Test recognize");
+            Assert.AreEqual(0.832908154f, neuronResult, "Test recognize");
         }
 
         [TestMethod()]
@@ -44,7 +44,7 @@ namespace com.bellarosa.ia.neuronalnetwork.number.Tests
             NumberMatchNeuron numberMatchNeuron = new NumberMatchNeuron(2);
             numberMatchNeuron.init();
             float neuronResult = (float)numberMatchNeuron.process(new ImageData[] { testImage });
-            Assert.AreEqual(0.5714286f, neuronResult, "Test not recognized");
+            Assert.AreEqual(0.8596939f, neuronResult, "Test not recognized");
         }
 
         [TestMethod()]
