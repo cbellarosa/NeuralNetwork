@@ -44,6 +44,7 @@ namespace com.bellarosa.ia.neuronalnetwork.number.Tests
             Assert.AreEqual(8, testNetwork.process(testImage), "Test recognize 8");
         }
 
+        [Ignore] // Not supported yet
         [TestMethod()]
         public void processTestRecognize9()
         {

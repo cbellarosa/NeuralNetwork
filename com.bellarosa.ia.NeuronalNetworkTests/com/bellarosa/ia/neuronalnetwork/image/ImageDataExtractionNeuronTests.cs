@@ -21,7 +21,7 @@ namespace com.bellarosa.ia.neuronalnetwork.number.image.Tests
         [TestMethod()]
         public void processTest()
         {
-            byte[] referenceBytetable = new byte[] {
+            ImageData referenceImageData = new ImageData(new byte[] {
                 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,
                 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,
                 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,
@@ -49,11 +49,12 @@ namespace com.bellarosa.ia.neuronalnetwork.number.image.Tests
                 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,
                 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,
                 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,
-                255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255 };
+                255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255,255,255, 255,255,255 }
+                , 28, 28);
 
             ImageData testImage = new ImageData(@".\resources\3.bmp");
-            byte[] neuronResult = (byte[])new ImageDataExtractionNeuron().process(new Dictionary<int, object> { { 1, testImage.Data } });
-            CollectionAssert.AreEqual(referenceBytetable, neuronResult, "Test extract");
+            object neuronResult = new ImageDataExtractionNeuron().process(new Dictionary<int, object> { { 1, testImage } });
+            Assert.AreEqual(referenceImageData, neuronResult, "Test extract");
         }
 
         [TestMethod()]
@@ -65,10 +66,23 @@ namespace com.bellarosa.ia.neuronalnetwork.number.image.Tests
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentException))]
+        public void processTestArgumentInvalidSize()
+        {
+            ImageData testInputData = new ImageData(new byte[] {
+                0, 255, 255, 255, 0,
+                255, 255, 255, 255, 255,
+                255, 255, 0, 255, 255,
+                255, 255, 255, 255, 255,
+                0, 255, 255, 255, 0}, 10, 20);
+            new ImageDataExtractionNeuron().process(new Dictionary<int, object> { { 1, testInputData } });
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(ArgumentException))]
         public void processTestArgumentDataNull()
         {
-            byte[] nullByteArray = null;
-            new ImageDataExtractionNeuron().process(new Dictionary<int, object> { { 1, nullByteArray } });
+            ImageData nullDataImage = new ImageData(null, 0, 0);
+            new ImageDataExtractionNeuron().process(new Dictionary<int, object> { { 1, nullDataImage } });
         }
         #endregion
     }

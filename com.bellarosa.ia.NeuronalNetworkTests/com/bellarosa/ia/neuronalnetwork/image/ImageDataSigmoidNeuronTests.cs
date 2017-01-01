@@ -2,6 +2,7 @@
 using log4net.Config;
 using System.Collections.Generic;
 using System;
+using com.bellarosa.ia.neuronalnetwork.image;
 
 namespace com.bellarosa.ia.neuronalnetwork.number.image.Tests
 {
@@ -20,19 +21,18 @@ namespace com.bellarosa.ia.neuronalnetwork.number.image.Tests
         [TestMethod()]
         public void processTestFloor()
         {
-            byte[] testBytetable = new byte[] { 255, 203, 0, 2, 12, 0, 25, 0, 89, 242, 189, 255, 128, 0, 0, 0 };
-            byte[] referenceBytetable = new byte[] { 255, 255, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0 };
-            byte[] neuronResult = (byte[])new ImageDataSigmoidNeuron().process(new Dictionary<int, object> { { 1, testBytetable } });
-            CollectionAssert.AreEqual(referenceBytetable, neuronResult, "Test floor");
+            ImageData testImageData = new ImageData(new byte[] { 255, 203, 0, 2, 12, 0, 25, 0, 89, 242, 189, 255, 128, 0, 0, 0 }, 4, 4);
+            ImageData referenceImageData = new ImageData(new byte[] { 255, 255, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0 }, 4, 4);
+            object neuronResult = new ImageDataSigmoidNeuron().process(new Dictionary<int, object> { { 1, testImageData } });
+            Assert.AreEqual(referenceImageData, neuronResult, "Test floor");
         }
 
         [TestMethod()]
         public void processTestSame()
         {
-            byte[] testBytetable = new byte[] { 255, 255, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0 };
-            byte[] referenceBytetable = new byte[] { 255, 255, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0 };
-            byte[] neuronResult = (byte[])new ImageDataSigmoidNeuron().process(new Dictionary<int, object> { { 1, testBytetable } });
-            CollectionAssert.AreEqual(referenceBytetable, neuronResult, "Test same");
+            ImageData testImageData = new ImageData(new byte[] { 255, 255, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0 }, 4, 4);
+            object neuronResult = new ImageDataSigmoidNeuron().process(new Dictionary<int, object> { { 1, testImageData } });
+            Assert.AreEqual(testImageData, neuronResult, "Test same");
         }
 
         [TestMethod()]
@@ -44,10 +44,23 @@ namespace com.bellarosa.ia.neuronalnetwork.number.image.Tests
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentException))]
+        public void processTestArgumentInvalidSize()
+        {
+            ImageData testInputData = new ImageData(new byte[] {
+                0, 255, 255, 255, 0,
+                255, 255, 255, 255, 255,
+                255, 255, 0, 255, 255,
+                255, 255, 255, 255, 255,
+                0, 255, 255, 255, 0}, 10, 20);
+            new ImageDataSigmoidNeuron().process(new Dictionary<int, object> { { 1, testInputData } });
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(ArgumentException))]
         public void processTestArgumentDataNull()
         {
-            byte[] nullByteArray = null;
-            new ImageDataSigmoidNeuron().process(new Dictionary<int, object> { { 1, nullByteArray } });
+            ImageData nullDataImage = new ImageData(null, 0, 0);
+            new ImageDataSigmoidNeuron().process(new Dictionary<int, object> { { 1, nullDataImage } });
         }
         #endregion
     }

@@ -36,8 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\lib-x64\log4net-1.2.15\bin\net\4.5\release\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.6\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -56,6 +57,7 @@
   <ItemGroup>
     <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataExtractionNeuronTests.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataSigmoidNeuronTests.cs" />
+    <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataTrimNeuronTests.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\number\NumberMatchNetworkTests.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\number\NumberMatchNeuronTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,6 +82,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="com.bellarosa.ia.NeuronalNetworkTests.playlist" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

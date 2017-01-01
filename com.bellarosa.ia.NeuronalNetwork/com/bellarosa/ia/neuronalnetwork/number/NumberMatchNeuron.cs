@@ -37,10 +37,13 @@ namespace com.bellarosa.ia.neuronalnetwork.number
             try
             {
                 ImageData imageData = new ImageData(fileName);
-                IDictionary<int, object> inputImage = new Dictionary<int, object> { {1, imageData.Data} };
-                byte[] extractedBytes = (byte[])new ImageDataExtractionNeuron().process(inputImage);
-                IDictionary<int, object> extractedData = new Dictionary<int, object> { {1, extractedBytes } };
-                this.byteTable = (byte[])new ImageDataSigmoidNeuron().process(extractedData);
+                IDictionary<int, object> inputImage = new Dictionary<int, object> { {1, imageData} };
+                object extractedImageData = new ImageDataExtractionNeuron().process(inputImage);
+                IDictionary<int, object> extractedData = new Dictionary<int, object> { {1, extractedImageData } };
+                object filteredImageData = new ImageDataSigmoidNeuron().process(extractedData);
+                IDictionary<int, object> filteredData = new Dictionary<int, object> { { 1, filteredImageData } };
+                ImageData trimedImageData = (ImageData)new ImageDataTrimNeuron().process(filteredData);
+                this.byteTable = trimedImageData.Data;
             }
             catch (IOException e)
             {
@@ -52,17 +55,18 @@ namespace com.bellarosa.ia.neuronalnetwork.number
 
         public override object process(IDictionary<int, object> data) 
         {
-            if (data == null)
+            if (data == null || data.Count == 0 || data[1] == null || !data[1].GetType().IsAssignableFrom(typeof(ImageData)))
             {
-                throw new ArgumentException();
+                throw new ArgumentException(data == null ? "Data is null" : data.ToString());
             }
 
-            if (data.Count == 0 || data[1] == null)
+            ImageData imageData = (ImageData)data[1];
+            if (imageData.Data == null)
             {
-                throw new ArgumentException(data.ToString());
+                throw new ArgumentException(imageData.ToString());
             }
 
-            byte[] comparingByteTable = (byte[])data[1];
+            byte[] comparingByteTable = (byte[])imageData.Data;
             int byteLength = this.byteTable.Length;
             int numberOfSamePixels = 0;
             for (int currentByte = 0;currentByte < byteLength;currentByte++)

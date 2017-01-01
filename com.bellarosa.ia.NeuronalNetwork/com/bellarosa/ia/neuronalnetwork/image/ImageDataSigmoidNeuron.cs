@@ -1,4 +1,5 @@
-﻿using System;
+﻿using com.bellarosa.ia.neuronalnetwork.image;
+using System;
 using System.Collections.Generic;
 
 namespace com.bellarosa.ia.neuronalnetwork.number.image
@@ -11,22 +12,23 @@ namespace com.bellarosa.ia.neuronalnetwork.number.image
         #region Public Methods
         public override object process(IDictionary<int, object> data)
         {
-            if (data == null)
+            if (data == null || data.Count == 0 || data[1] == null || !data[1].GetType().IsAssignableFrom(typeof(ImageData)))
             {
-                throw new ArgumentException();
+                throw new ArgumentException(data == null ? "Data is null" : data.ToString());
             }
 
-            if (data.Count == 0 || data[1] == null)
+            ImageData imageData = (ImageData)data[1];
+            if (imageData.Data == null)
             {
-                throw new ArgumentException(data.ToString());
+                throw new ArgumentException(imageData.ToString());
             }
 
-            byte[] byteTable = (byte[])data[1];
+            byte[] byteTable = (byte[])imageData.Data;
             for (int currentByte = 0; currentByte < byteTable.Length; currentByte++)
             {
                 byteTable[currentByte] = byteTable[currentByte] < (byte)128 ? (byte)0 : (byte)255;
             }
-            return byteTable;
+            return new ImageData(byteTable, imageData.Width, imageData.Height);
         }
         #endregion
     }
