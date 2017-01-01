@@ -7,10 +7,11 @@ namespace com.bellarosa.ia.neuronalnetwork.number.image
     /// <summary>
     /// Trim useless data from image raster
     /// </summary>
-    public class ImageDataTrimNeuron : SimpleNeuron
+    public class ImageDataCroppingNeuron : SimpleNeuron
     {
         #region Constants
         private const int EmptyDataColor = 255;
+        private const float maxDelta = 6.9F;
         #endregion
 
         #region Public Methods
@@ -38,33 +39,23 @@ namespace com.bellarosa.ia.neuronalnetwork.number.image
                 throw new ArgumentException();
             }
 
+            byte[] nbNonEmptyPixelsByColumn = new byte[imageWidth];
+            byte[] nbNonEmptyPixelsByRow = new byte[imageHeight];
             int pixelIndex = 0;
-            while (byteTable[pixelIndex] == ImageDataTrimNeuron.EmptyDataColor && pixelIndex < byteTableLength) { pixelIndex++; }
-            int minRowEmpty = pixelIndex / imageWidth;
-            int minColumnEmpty = pixelIndex % imageWidth;
-
-            pixelIndex = byteTableLength - 1;
-            while (byteTable[pixelIndex] == ImageDataTrimNeuron.EmptyDataColor && pixelIndex >= 0) { pixelIndex--; }
-            int maxRowEmpty = pixelIndex / imageWidth;
-            int maxColumnEmpty = pixelIndex % imageWidth;
-
-            for (int row = minRowEmpty; row <= maxRowEmpty; row++)
+            for (int row = 0; row < imageHeight; row++)
             {
-                pixelIndex = row * imageWidth;
-                int currentIndex = 0;
-                while (byteTable[pixelIndex + currentIndex] == ImageDataTrimNeuron.EmptyDataColor && currentIndex < minColumnEmpty) { currentIndex++; }
-                if (currentIndex < minColumnEmpty)
+                for (int column = 0; column < imageWidth; column++)
                 {
-                    minColumnEmpty = currentIndex;
-                }
-
-                currentIndex = imageWidth - 1;
-                while (byteTable[pixelIndex + currentIndex] == ImageDataTrimNeuron.EmptyDataColor && currentIndex > maxColumnEmpty) { currentIndex--; }
-                if (currentIndex > maxColumnEmpty)
-                {
-                    maxColumnEmpty = currentIndex;
+                    byte isNonEmptyPixel = (byteTable[pixelIndex++] == ImageDataCroppingNeuron.EmptyDataColor) ? (byte)0 : (byte)1;
+                    nbNonEmptyPixelsByColumn[column] += isNonEmptyPixel;
+                    nbNonEmptyPixelsByRow[row] += isNonEmptyPixel;
                 }
             }
+
+            int minRowEmpty = this.getMinimumNonEmpty(nbNonEmptyPixelsByRow);
+            int maxRowEmpty = this.getMaximumNonEmpty(nbNonEmptyPixelsByRow);
+            int minColumnEmpty = this.getMinimumNonEmpty(nbNonEmptyPixelsByColumn);
+            int maxColumnEmpty = this.getMaximumNonEmpty(nbNonEmptyPixelsByColumn);
 
             byte[] trimedByteTable = new byte[(maxColumnEmpty - minColumnEmpty + 1) * (maxRowEmpty - minRowEmpty + 1)];
             pixelIndex = 0;
@@ -77,6 +68,32 @@ namespace com.bellarosa.ia.neuronalnetwork.number.image
             }
 
             return new ImageData(trimedByteTable, maxColumnEmpty - minColumnEmpty + 1, maxRowEmpty - minRowEmpty + 1);
+        }
+        #endregion
+
+        #region Private Methods
+        private int getMinimumNonEmpty(byte[] nbNonEmptyPixelsArray)
+        {
+            for (int index = 0; index < nbNonEmptyPixelsArray.Length - 1; index++)
+            {
+                if (nbNonEmptyPixelsArray[index] > 0 && nbNonEmptyPixelsArray[index + 1] / nbNonEmptyPixelsArray[index] < maxDelta)
+                {
+                    return index;
+                }
+            }
+            return 0;
+        }
+
+        private int getMaximumNonEmpty(byte[] nbNonEmptyPixelsArray)
+        {
+            for (int index = nbNonEmptyPixelsArray.Length - 1; index > 0; index--)
+            {
+                if (nbNonEmptyPixelsArray[index] > 0 && nbNonEmptyPixelsArray[index - 1] / nbNonEmptyPixelsArray[index] < maxDelta)
+                {
+                    return index;
+                }
+            }
+            return nbNonEmptyPixelsArray.Length - 1;
         }
         #endregion
     }

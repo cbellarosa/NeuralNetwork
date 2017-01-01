@@ -42,7 +42,7 @@ namespace com.bellarosa.ia.neuronalnetwork.number
                 IDictionary<int, object> extractedData = new Dictionary<int, object> { {1, extractedImageData } };
                 object filteredImageData = new ImageDataSigmoidNeuron().process(extractedData);
                 IDictionary<int, object> filteredData = new Dictionary<int, object> { { 1, filteredImageData } };
-                ImageData trimedImageData = (ImageData)new ImageDataTrimNeuron().process(filteredData);
+                ImageData trimedImageData = (ImageData)new ImageDataCroppingNeuron().process(filteredData);
                 this.byteTable = trimedImageData.Data;
             }
             catch (IOException e)

@@ -57,7 +57,7 @@
   <ItemGroup>
     <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataExtractionNeuronTests.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataSigmoidNeuronTests.cs" />
-    <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataTrimNeuronTests.cs" />
+    <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataCroppingNeuronTests.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\number\NumberMatchNetworkTests.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\number\NumberMatchNeuronTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

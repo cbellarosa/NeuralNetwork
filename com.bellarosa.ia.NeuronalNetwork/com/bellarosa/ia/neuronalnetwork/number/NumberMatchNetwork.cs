@@ -32,7 +32,7 @@ namespace com.bellarosa.ia.neuronalnetwork.number
             imageDataExtractionNeuron.Synapses.Add(imageFilterNeuron);
 
             // TODO: Fix that
-            ImageDataTrimNeuron imageTrimNeuron = new ImageDataTrimNeuron();
+            ImageDataCroppingNeuron imageTrimNeuron = new ImageDataCroppingNeuron();
             imageFilterNeuron.Synapses.Add(imageTrimNeuron);
             for (int i = 0;i < 10;i++)
             {
@@ -62,7 +62,7 @@ namespace com.bellarosa.ia.neuronalnetwork.number
                 {
                     IDictionary<int, object> inputImageDataExtracted = new Dictionary<int, object> { { 1, imageDataExtractedResult } };
                     object imageDataSigmoidResult = imageDataSigmoidNeuron.process(inputImageDataExtracted);
-                    foreach (ImageDataTrimNeuron imageDataTrimNeuron in imageDataSigmoidNeuron.Synapses)
+                    foreach (ImageDataCroppingNeuron imageDataTrimNeuron in imageDataSigmoidNeuron.Synapses)
                     {
                         IDictionary<int, object> inputImageDataTrimed = new Dictionary<int, object> { { 1, imageDataSigmoidResult } };
                         object imageDataTrimedResult = imageDataTrimNeuron.process(inputImageDataTrimed);

@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageData.cs" />
-    <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataTrimNeuron.cs" />
+    <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataCroppingNeuron.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\image\ImageDataExtractionNeuron.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\MultiLayerNetwork.cs" />
     <Compile Include="com\bellarosa\ia\neuronalnetwork\INeuron.cs" />
